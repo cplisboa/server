@@ -1,0 +1,30 @@
+Lendo intervalo entre medidas e número de medidas em cada pacote 
+>  0, 0
+Começando a ler dados que identificam os campos que virão...
+> 1
+1
+Grandeza: 1
+Fim das grandezas.. Temos 1 Grandezas nesse arquivo
+Lendo data e depois hora..
+> 16/ 7/15
+> 22:25
+Parseando data...
+Data formatada: 2015-07-16
+Parseando hora...
+Hora formatada: 22:25
+Terminei de ler os dados de nível. Foram: 0linhas.
+Identificando IDs das grandezas..
+> 8,2,9
+8,2,9
+Grandeza: 8
+Grandeza: 2
+Grandeza: 9
+Fim das grandezas.. Temos 3 Grandezas nesse arquivo
+Os dados são esses: 8,2,9
+Dados de Grandezas: 0.00,19.35,0.00
+Volume: 0.00
+ATENÇÃO!! PERIODO É ZERO!!! NÃO PODERIA SER!!
+Vazao Calculada: 0.0
+Corrente: 19.35
+Pluviometria: 0.00
+Iniciando conexão com banco de dados
