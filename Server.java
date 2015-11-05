@@ -13,7 +13,7 @@ public class Server {
 	
 	public Server(String readFromFile) {
         try {	       
-          	System.out.println("SIGAS  GPRS  Server. Versao  FINAL 1.1  de  05/11/2015.");
+          	System.out.println("SIGAS  GPRS  Server. Versao  FINAL 1.1  de  05/11/2015.,");
           	System.out.println("Calculo de CESP considerando periodo de bombeamento.");
           	System.out.println("Logs de cada poco em arquivos separados.");
           	System.out.println("Seja bem vindo...");
