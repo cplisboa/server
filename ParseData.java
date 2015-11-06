@@ -183,7 +183,7 @@ public class ParseData extends Thread {
 				            	  				
 				//Lendo os dados mais frequentes (pacotes de dados com numMedidas)
 				String lastHour = ""; //Ultima hora utilizada
-				int periodoGrandezas = numMedidas * tempoEntreMedidas; // Retorna período em segundos do envio de grandezas
+				int periodoGrandezas = (numMedidas+1) * tempoEntreMedidas; // Retorna período em segundos do envio de grandezas
 				for(int i=0; i<numMedidas; i++) {
 					linha=readSocket();	
 					lastHour = lineData(i, linha, tempoEntreMedidas, grandezasList, db, horaDate, novaData);
