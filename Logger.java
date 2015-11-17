@@ -11,7 +11,7 @@ public class Logger {
 	private FileWriter fis;
 
 	public Logger(String code, Date data) {
-		fileName = code + "-" + data.getDay() + "-" + data.getMonth() + "-" + data.getYear() + " " + data.getHours() + "-" +data.getMinutes();
+		fileName = code + "-" + data.getDate() + "-" + (data.getMonth()+1) + "-" + (data.getYear()+1900) + " " + data.getHours() + "-" +data.getMinutes();
 		try {
 			fis = new FileWriter(fileName+".txt");
 			escritor = new BufferedWriter(fis);

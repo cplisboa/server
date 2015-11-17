@@ -20,10 +20,14 @@ public class Cesp {
 		int year = Integer.parseInt(dataString.substring(0,4));
 		int month = Integer.parseInt(dataString.substring(5,7));
 		int day = Integer.parseInt(dataString.substring(8,10));
-		this.dataFormatoFirebird = month+"-"+day+"-"+year;		
+		int hora = Integer.parseInt(dataString.substring(11,13))-1;
+		int minuto = Integer.parseInt(dataString.substring(14,16));
+		int segundo = Integer.parseInt(dataString.substring(17,19));
+		this.dataFormatoFirebird = month+"-"+day+"-"+year;	
+		logger.log("Hora: "+hora+":"+minuto+":"+segundo);
 		logger.log("Data no formado do firebird: "+dataFormatoFirebird);
 		
-		this.dataAtual = new Date(year-1900, month-1, day);
+		this.dataAtual = new Date(year-1900, month-1, day, hora, minuto, segundo);
 		logger.log("Data no formato date: "+dataAtual.toString());
 	}
 	
@@ -64,7 +68,10 @@ public class Cesp {
 			float rebaixamento = getRebaixamento(nivelAtual, medInicial.getNivel());
 			logger.log("Rebaixamento: " + rebaixamento);
 			
-			cesp = vazao / rebaixamento;
+			if(rebaixamento == 0)
+				cesp = 0;
+			else
+				cesp = vazao / rebaixamento;
 			logger.log("CESP Calculada: "+cesp+" para o poço: " + this.code);
 		}
 		return cesp;
@@ -84,6 +91,8 @@ public class Cesp {
 		calAtual.setTime(dataAtual);
 		Calendar calOld = Calendar.getInstance();
 		calOld.setTime(dataInicial);
+		logger.log("Tempo na medida inicial: "+calOld.getTime().toString());
+		logger.log("Tempo na medida atual: "+calAtual.getTime().toString());
 		diff = calAtual.getTimeInMillis() - calOld.getTimeInMillis();
 		diff = diff/1000; // Tempo em segundos
 		logger.log("Diferença de tempo em segundos: " + diff);
@@ -111,13 +120,13 @@ public class Cesp {
 	 * @return Objeto do tipo medida (contém horário inicial e nível)
 	 */
 	private Medida getMedidaInicial() throws Exception{
-		String SQL_GET_NIVEL_INICIAL = "								" +
-				" select FIRST 1 data, nivel, hidrometro from grandezas	" +
-				" where code = '"+this.code+"'							" +
-				" and data > '"+this.dataFormatoFirebird+"'				" + 
-				" and nivel > 0											" +
-				" and corrente > 1										" +
-				" order by data asc										";
+		String SQL_GET_NIVEL_INICIAL = "" +
+				" select FIRST 1 data, nivel, hidrometro from grandezas" +
+				" where code = '"+this.code+"'" +
+				" and data > '"+this.dataFormatoFirebird+"'" + 
+				" and nivel > 0" +
+				" and corrente > 1" +
+				" order by data asc";
 		
 		
 		Medida med = null;
