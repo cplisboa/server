@@ -17,18 +17,24 @@ public class Cesp {
 		this.logger = logger;
 		
 		logger.log("Data para cálculo do CESP: " + dataString);
-		int year = Integer.parseInt(dataString.substring(0,4));
-		int month = Integer.parseInt(dataString.substring(5,7));
-		int day = Integer.parseInt(dataString.substring(8,10));
-		int hora = Integer.parseInt(dataString.substring(11,13))-1;
-		int minuto = Integer.parseInt(dataString.substring(14,16));
-		int segundo = Integer.parseInt(dataString.substring(17,19));
-		this.dataFormatoFirebird = month+"-"+day+"-"+year;	
-		logger.log("Hora: "+hora+":"+minuto+":"+segundo);
-		logger.log("Data no formado do firebird: "+dataFormatoFirebird);
-		
-		this.dataAtual = new Date(year-1900, month-1, day, hora, minuto, segundo);
+		if ((dataString == null) || dataString.equals("")) {
+			logger.log("Data p/ calculo do CESP veio NULL. Vamos usar medida = vazio");
+			this.dataAtual = Calendar.getInstance().getTime();
+		} else {
+			int year = Integer.parseInt(dataString.substring(0,4));
+			int month = Integer.parseInt(dataString.substring(5,7));
+			int day = Integer.parseInt(dataString.substring(8,10));
+			int hora = Integer.parseInt(dataString.substring(11,13))-1;
+			int minuto = Integer.parseInt(dataString.substring(14,16));
+			int segundo = Integer.parseInt(dataString.substring(17,19));
+			this.dataFormatoFirebird = month+"-"+day+"-"+year;	
+			logger.log("Hora: "+hora+":"+minuto+":"+segundo);
+			logger.log("Data no formado do firebird: "+dataFormatoFirebird);
+			this.dataAtual = new Date(year-1900, month-1, day, hora, minuto, segundo);
+			
+		}
 		logger.log("Data no formato date: "+dataAtual.toString());
+		
 	}
 	
 	// vazao / tempo /rebaixamento
@@ -129,14 +135,19 @@ public class Cesp {
 				" order by data asc";
 		
 		
-		Medida med = null;
-		logger.log(SQL_GET_NIVEL_INICIAL.trim());
-		ResultSet rs = db.execQuery(SQL_GET_NIVEL_INICIAL);
-		if(rs.next()) {
-			med = new Medida();
-			med.setNivel(rs.getFloat("nivel"));
-			med.setDate(rs.getDate("data"));
-			med.setHidrometro(rs.getFloat("hidrometro"));
+		Medida med = new Medida();
+		if ( (this.dataFormatoFirebird==null) || (this.dataFormatoFirebird.equals(""))){
+			logger.log("Não vou fazer SQL de medida inicial");
+			med.setDate(Calendar.getInstance().getTime());
+		} else {
+			logger.log(SQL_GET_NIVEL_INICIAL.trim());
+			ResultSet rs = db.execQuery(SQL_GET_NIVEL_INICIAL);
+			if(rs.next()) {
+				med = new Medida();
+				med.setNivel(rs.getFloat("nivel"));
+				med.setDate(rs.getDate("data"));
+				med.setHidrometro(rs.getFloat("hidrometro"));
+			}
 		}
 		return med;		
 	}
