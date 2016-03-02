@@ -9,7 +9,7 @@ import java.util.Calendar;
 public class Server {
 	private ServerSocket server;
 	private Socket socket;
-	private static final int PORTA=2020;      
+	private static final int PORTA=2030; //Porta 2020 para Server normal, Porta 2030 para o servidor controlador de teste      
 	
 	public Server(String readFromFile) {
         try {	       

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ public class ParseData extends Thread {
 	private String abcissa = "";
 	private Socket socket;
 	private BufferedReader read;
+	private BufferedWriter out;
 	private String lastNivel = "0";
 	private Logger logger;
 	private Date today;
@@ -34,6 +36,7 @@ public class ParseData extends Thread {
 		socket = serverSocket;
 		try {
 			read = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		} catch (IOException e) {
 			System.out.println("Erro abrindo socket para leitura.");
 			e.printStackTrace();
@@ -103,6 +106,9 @@ public class ParseData extends Thread {
     	return linha;
     }
     
+    /**
+     * Método responsável por receber os dados do socket e tratar.
+     */
     private void receiveData() {
     	Database db = null;
     	try {
@@ -112,10 +118,30 @@ public class ParseData extends Thread {
         }    	
         
         try {
+        	
+        	/** Recebe 2 bytes: 	
+        		1o - Versão do FW
+        		2o - Numero de Sério */ 
+        	System.out.println("Lendo versão de FW e serial");
+        	String linha = readSocket();
+        	StringTokenizer strToken = new StringTokenizer(linha, ",");
+        	
+        	String fw = strToken.nextToken().trim();
+        	String serial = strToken.nextToken().trim();
+        	
+        	// Aqui o Data-logger aguarda 10 segundos o envio de algum comando
+        	out.write("1");
+        	
+        	linha = readSocket();
+        	System.out.println("O que foi enviado após enviarmos o '1': "+linha);
+        	
+        	
+        	
 		    System.out.println("Lendo coordenadas UTM");		            				            	
-			String linha = readSocket();
-			System.out.println(linha);		            				            	
-			StringTokenizer strToken = new StringTokenizer(linha, ",");
+			linha = readSocket();
+			System.out.println(linha);
+			
+			strToken = new StringTokenizer(linha, ",");
 			String setor = strToken.nextToken().trim();
 			abcissa = strToken.nextToken().trim();
 			logger = new Logger(abcissa, today);
