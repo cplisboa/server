@@ -121,7 +121,7 @@ public class ParseData extends Thread {
         	
         	/** Recebe 2 bytes: 	
         		1o - Versão do FW
-        		2o - Numero de Sério */ 
+        		2o - Numero de Série */ 
         	System.out.println("Lendo versão de FW e serial");
         	String linha = readSocket();
         	StringTokenizer strToken = new StringTokenizer(linha, ",");
@@ -288,7 +288,7 @@ public class ParseData extends Thread {
 			lastHour = insertData(db, 1,novaData,""+cal.get(Calendar.HOUR_OF_DAY),""+cal.get(Calendar.MINUTE),nivel,vazao,corrente, abcissa);		            		
 		} catch (Exception e) {
 			logger.log("Erro inserindo no db "+e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 		}		        			            	
 		lastNivel = nivel;
 		return lastHour;
